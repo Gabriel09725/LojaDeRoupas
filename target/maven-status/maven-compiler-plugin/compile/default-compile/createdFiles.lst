@@ -1,0 +1,13 @@
+Model\Venda.class
+Model\Cliente.class
+Model\Produto.class
+View\TelaBoasvindas.class
+View\TelaLogin.class
+Model\ItemVenda.class
+View\TelaPrincipal.class
+View\TelaCliente.class
+View\TelaProduto.class
+Model\Categoria.class
+View\TelaFuncionario.class
+View\TelaVenda.class
+View\TelaMenuCliente.class
