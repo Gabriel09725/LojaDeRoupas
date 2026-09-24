@@ -1,21 +1,21 @@
 package Model;
 
-public class Cliente {
+public class Gerente {
     private int id;
     private String nome;
     private String cpf;
     private String email;
-    private String telefone;
+    private String departamento;
     private String senha;
 
-    public Cliente() {}
+    public Gerente() {}
 
-    public Cliente(int id, String nome, String cpf, String email, String telefone, String senha) {
+    public Gerente(int id, String nome, String cpf, String email, String departamento, String senha) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
-        this.telefone = telefone;
+        this.departamento = departamento;
         this.senha = senha;
     }
 
@@ -51,12 +51,12 @@ public class Cliente {
         this.email = email;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public String getDepartamento() {
+        return departamento;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
     }
 
     public String getSenha() {

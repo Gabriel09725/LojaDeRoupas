@@ -41,7 +41,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         btnProdutos.setText("Gerenciar Produtos");
         btnProdutos.addActionListener(this::btnProdutosActionPerformed);
 
-        btnClientes.setText("Gerenciar Clientes");
+        btnClientes.setText("Gerenciar Funcionários");
         btnClientes.addActionListener(this::btnClientesActionPerformed);
 
         btnVendas.setText("Abri Vendas");
@@ -101,7 +101,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
         // TODO add your handling code here:
-        new TelaCliente().setVisible(true);
+        new TelaFuncionario().setVisible(true);
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed

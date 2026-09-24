@@ -9,7 +9,7 @@ package View;
  * @author gabri
  */
 public class TelaProduto extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaProduto.class.getName());
 
     /**
@@ -178,10 +178,34 @@ public class TelaProduto extends javax.swing.JFrame {
         String cor = txtCor.getText();
         String precoStr = txtPreco.getText();
         String estoqueStr = txtEstoque.getText();
-        if (nome.trim().isEmpty() || precoStr.trim().isEmpty()){
-            javax.swing.JOptionPane.showMessageDialog(this, "Preencha pelo menos Nome, Preço e estoque!", "Aviso",  javax.swing.JOptionPane.WARNING_MESSAGE);
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Produto \"" + nome + "\" cadastrado com sucesso! ");
+        if (nome.trim().isEmpty() || precoStr.trim().isEmpty() || estoqueStr.trim().isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Preencha pelo menos Nome, Preço e Estoque!", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        try {
+            double preco = Double.parseDouble(precoStr.replace(",", "."));
+            int estoque = Integer.parseInt(estoqueStr);
+            Model.Produto produto = new Model.Produto();
+            produto.setNome(nome);
+            produto.setCategoria(categoria);
+            produto.setTamanho(tamanho);
+            produto.setCor(cor);
+            produto.setPreco(preco);
+            produto.setEstoque(estoque);
+            DAO.ProdutoDAO dao = new DAO.ProdutoDAO();
+            if (dao.cadastrar(produto)) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Produto \"" + nome + "\" cadastrado com sucesso!");
+                txtNome.setText("");
+                txtTamanho.setText("");
+                txtCor.setText("");
+                txtPreco.setText("");
+                txtEstoque.setText("");
+                cbCategoria.setSelectedIndex(0);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Erro ao salvar o produto no banco de dados!", "Erro", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Preço e Estoque devem ser números válidos!", "Erro de Formatação", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
