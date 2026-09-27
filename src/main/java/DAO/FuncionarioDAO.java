@@ -1,6 +1,6 @@
 package DAO;
 
-import Model.Cliente;
+import Model.Funcionario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,37 +8,37 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClienteDAO {
+public class FuncionarioDAO {
 
-    public boolean cadastrar(Cliente cliente) {
-        String sql = "INSERT INTO cliente (nome, cpf, email, telefone, senha) VALUES (?, ?, ?, ?, ?)";
+    public boolean cadastrar(Funcionario funcionario) {
+        String sql = "INSERT INTO funcionario (nome, cpf, email, telefone, senha) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = ConexaoDAO.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, cliente.getNome());
-            stmt.setString(2, cliente.getCpf());
-            stmt.setString(3, cliente.getEmail());
-            stmt.setString(4, cliente.getTelefone());
-            stmt.setString(5, cliente.getSenha());
+            stmt.setString(1, funcionario.getNome());
+            stmt.setString(2, funcionario.getCpf());
+            stmt.setString(3, funcionario.getEmail());
+            stmt.setString(4, funcionario.getTelefone());
+            stmt.setString(5, funcionario.getSenha());
 
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            System.err.println("Erro ao cadastrar cliente: " + e.getMessage());
+            System.err.println("Erro ao cadastrar funcionario: " + e.getMessage());
             return false;
         }
     }
 
-    public List<Cliente> listar() {
-        List<Cliente> lista = new ArrayList<>();
-        String sql = "SELECT * FROM cliente";
+    public List<Funcionario> listar() {
+        List<Funcionario> lista = new ArrayList<>();
+        String sql = "SELECT * FROM funcionario";
 
         try (Connection conn = ConexaoDAO.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Cliente c = new Cliente();
+                Funcionario c = new Funcionario();
                 c.setId(rs.getInt("id"));
                 c.setNome(rs.getString("nome"));
                 c.setCpf(rs.getString("cpf"));
@@ -48,33 +48,33 @@ public class ClienteDAO {
                 lista.add(c);
             }
         } catch (SQLException e) {
-            System.err.println("Erro ao listar clientes: " + e.getMessage());
+            System.err.println("Erro ao listar Funcionário: " + e.getMessage());
         }
         return lista;
     }
 
-    public boolean alterar(Cliente cliente) {
-        String sql = "UPDATE cliente SET nome = ?, cpf = ?, email = ?, telefone = ?, senha = ? WHERE id = ?";
+    public boolean alterar(Funcionario funcionario) {
+        String sql = "UPDATE funcionario SET nome = ?, cpf = ?, email = ?, telefone = ?, senha = ? WHERE id = ?";
         try (Connection conn = ConexaoDAO.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, cliente.getNome());
-            stmt.setString(2, cliente.getCpf());
-            stmt.setString(3, cliente.getEmail());
-            stmt.setString(4, cliente.getTelefone());
-            stmt.setString(5, cliente.getSenha());
-            stmt.setInt(6, cliente.getId());
+            stmt.setString(1, funcionario.getNome());
+            stmt.setString(2, funcionario.getCpf());
+            stmt.setString(3, funcionario.getEmail());
+            stmt.setString(4, funcionario.getTelefone());
+            stmt.setString(5, funcionario.getSenha());
+            stmt.setInt(6, funcionario.getId());
 
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            System.err.println("Erro ao alterar cliente: " + e.getMessage());
+            System.err.println("Erro ao alterar funcionario: " + e.getMessage());
             return false;
         }
     }
 
     public boolean excluir(int id) {
-        String sql = "DELETE FROM cliente WHERE id = ?";
+        String sql = "DELETE FROM funcionario WHERE id = ?";
         try (Connection conn = ConexaoDAO.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -82,13 +82,13 @@ public class ClienteDAO {
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            System.err.println("Erro ao excluir cliente: " + e.getMessage());
+            System.err.println("Erro ao excluir funcionario: " + e.getMessage());
             return false;
         }
     }
 
-    public Cliente autenticar(String cpfOuNome, String senha) {
-        String sql = "SELECT * FROM cliente WHERE (cpf = ? OR nome = ?) AND senha = ?";
+    public Funcionario autenticar(String cpfOuNome, String senha) {
+        String sql = "SELECT * FROM funcionario WHERE (nome ? OR senha = ?)";
         try (Connection conn = ConexaoDAO.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -98,7 +98,7 @@ public class ClienteDAO {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Cliente c = new Cliente();
+                    Funcionario c = new Funcionario();
                     c.setId(rs.getInt("id"));
                     c.setNome(rs.getString("nome"));
                     c.setCpf(rs.getString("cpf"));
@@ -108,7 +108,7 @@ public class ClienteDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Erro ao autenticar cliente: " + e.getMessage());
+            System.err.println("Erro ao autenticar Funcionario: " + e.getMessage());
         }
         return null;
     }

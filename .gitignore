@@ -1,0 +1,6 @@
+/nbproject/
+target/
+*.db
+.DS_Store
+.idea/
+*.nbgradle/

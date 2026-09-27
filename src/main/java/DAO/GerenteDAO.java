@@ -53,6 +53,40 @@ public class GerenteDAO {
         return lista;
     }
 
+    public boolean alterar(Gerente gerente) {
+        String sql = "UPDATE gerente SET nome = ?, cpf = ?, email = ?, departamento = ?, senha = ? WHERE id = ?";
+        try (Connection conn = ConexaoDAO.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, gerente.getNome());
+            stmt.setString(2, gerente.getCpf());
+            stmt.setString(3, gerente.getEmail());
+            stmt.setString(4, gerente.getDepartamento());
+            stmt.setString(5, gerente.getSenha());
+            stmt.setInt(6, gerente.getId());
+
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Erro ao alterar gerente: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean excluir(int id) {
+        String sql = "DELETE FROM gerente WHERE id = ?";
+        try (Connection conn = ConexaoDAO.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Erro ao excluir gerente: " + e.getMessage());
+            return false;
+        }
+    }
+
     public Gerente autenticar(String cpfOuNome, String senha) {
         String sql = "SELECT * FROM gerente WHERE (cpf = ? OR nome = ?) AND senha = ?";
         try (Connection conn = ConexaoDAO.conectar();

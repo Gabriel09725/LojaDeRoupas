@@ -4,11 +4,18 @@
  */
 package View;
 
+import DAO.ProdutoDAO;
+import Model.Produto;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author gabri
  */
 public class TelaProduto extends javax.swing.JFrame {
+         private List<Produto> produtos;
+
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaProduto.class.getName());
 
@@ -17,6 +24,7 @@ public class TelaProduto extends javax.swing.JFrame {
      */
     public TelaProduto() {
         initComponents();
+        carregarTabela();
     }
 
     /**
@@ -41,7 +49,7 @@ public class TelaProduto extends javax.swing.JFrame {
         txtPreco = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtEstoque = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -67,8 +75,8 @@ public class TelaProduto extends javax.swing.JFrame {
 
         jLabel7.setText("Estoque:");
 
-        jButton1.setText("Salvar");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(this::btnSalvarActionPerformed);
 
         jButton2.setText("Limpar");
         jButton2.addActionListener(this::jButton2ActionPerformed);
@@ -99,7 +107,7 @@ public class TelaProduto extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButton2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1))
+                                .addComponent(btnSalvar))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel5)
@@ -152,7 +160,7 @@ public class TelaProduto extends javax.swing.JFrame {
                     .addComponent(txtEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(btnSalvar)
                     .addComponent(jButton2))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -170,7 +178,7 @@ public class TelaProduto extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbCategoriaActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // TODO add your handling code here:
         String nome = txtNome.getText();
         String categoria = cbCategoria.getSelectedItem().toString();
@@ -193,6 +201,7 @@ public class TelaProduto extends javax.swing.JFrame {
             produto.setPreco(preco);
             produto.setEstoque(estoque);
             DAO.ProdutoDAO dao = new DAO.ProdutoDAO();
+            System.out.println("Produto: \n Nome: "  + produto.getNome() +  "\n Categoria: " + produto.getCategoria());
             if (dao.cadastrar(produto)) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Produto \"" + nome + "\" cadastrado com sucesso!");
                 txtNome.setText("");
@@ -201,13 +210,14 @@ public class TelaProduto extends javax.swing.JFrame {
                 txtPreco.setText("");
                 txtEstoque.setText("");
                 cbCategoria.setSelectedIndex(0);
+                carregarTabela();
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this, "Erro ao salvar o produto no banco de dados!", "Erro", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Preço e Estoque devem ser números válidos!", "Erro de Formatação", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -244,10 +254,24 @@ public class TelaProduto extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new TelaProduto().setVisible(true));
     }
+    
+    private void carregarTabela() {
+        DefaultTableModel tabela = (DefaultTableModel) jTable1.getModel();
+        tabela.setRowCount(0);
+        ProdutoDAO dao = new ProdutoDAO();
+        produtos = dao.listar();
+        for (Produto produto : produtos) {
+            tabela.addRow(new Object[]{
+                produto.getNome(),
+                String.format("%2F", produto.getPreco()),
+                produto.getEstoque()
+            });
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox<String> cbCategoria;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

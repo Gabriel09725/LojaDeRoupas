@@ -9,7 +9,7 @@ public class PagamentoDAO {
     public boolean salvar(Pagamento pagamento) {
         String sql = "INSERT INTO pagamento (valor, forma_pagamento, data_pagamento) VALUES (?, ?, ?)";
 
-        try (Connection conn = ConexaoDAO.getConectar();
+        try (Connection conn = ConexaoDAO.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setDouble(1, pagamento.getValor());

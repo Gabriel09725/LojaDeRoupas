@@ -54,4 +54,39 @@ public class ProdutoDAO {
         }
         return lista;
     }
+
+    public boolean alterar(Produto produto) {
+        String sql = "UPDATE produto SET nome=?, categoria=?, tamanho=?, cor=?, preco=?, estoque=? WHERE id=?";
+        try (Connection conn = ConexaoDAO.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, produto.getNome());
+            stmt.setString(2, produto.getCategoria());
+            stmt.setString(3, produto.getTamanho());
+            stmt.setString(4, produto.getCor());
+            stmt.setDouble(5, produto.getPreco());
+            stmt.setInt(6, produto.getEstoque());
+            stmt.setInt(7, produto.getId());
+
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Erro ao alterar produto: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean excluir(int id) {
+        String sql = "DELETE FROM produto WHERE id=?";
+        try (Connection conn = ConexaoDAO.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Erro ao excluir produto: " + e.getMessage());
+            return false;
+        }
+    }
 }

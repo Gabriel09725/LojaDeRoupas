@@ -23,7 +23,6 @@ public final class ConexaoDAO {
 
         try {
             Connection conn = DriverManager.getConnection(URL);
-            System.out.println("Conexão com o banco SQLite (" + NOME_BANCO + ") estabelecida com sucesso!");
             return conn;
         } catch (SQLException e) {
             System.err.println("Falha ao conectar ao banco de dados SQLite: " + e.getMessage());
@@ -37,6 +36,15 @@ public final class ConexaoDAO {
 
     public static void inicializarBanco() {
         String sqlCliente = "CREATE TABLE IF NOT EXISTS cliente ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "nome TEXT NOT NULL, "
+                + "cpf TEXT UNIQUE NOT NULL, "
+                + "email TEXT, "
+                + "telefone TEXT, "
+                + "senha TEXT NOT NULL"
+                + ");";
+        
+        String sqlFuncionario = "CREATE TABLE IF NOT EXISTS funcionario ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "nome TEXT NOT NULL, "
                 + "cpf TEXT UNIQUE NOT NULL, "
@@ -64,19 +72,19 @@ public final class ConexaoDAO {
                 + "estoque INTEGER NOT NULL"
                 + ");";
 
-        String sqlVenda = "CREATE TABLE IF NOT EXISTS venda ("
+        String sqlPagamento = "CREATE TABLE IF NOT EXISTS pagamento ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "cliente_id INTEGER, "
-                + "data_venda TEXT NOT NULL, "
-                + "total REAL NOT NULL, "
-                + "FOREIGN KEY (cliente_id) REFERENCES cliente(id)"
+                + "valor REAL NOT NULL, "
+                + "forma_pagamento TEXT NOT NULL, "
+                + "data_pagamento TEXT DEFAULT CURRENT_TIMESTAMP"
                 + ");";
 
         try (Connection conn = conectar(); Statement stmt = conn.createStatement()) {
             stmt.execute(sqlCliente);
+            stmt.execute(sqlFuncionario);
             stmt.execute(sqlGerente);
             stmt.execute(sqlProduto);
-            stmt.execute(sqlVenda);
+            stmt.execute(sqlPagamento);
             System.out.println("Tabelas da Loja de Roupas verificadas/criadas com sucesso!");
         } catch (SQLException e) {
             System.err.println("Erro ao criar tabelas no banco de dados: " + e.getMessage());
