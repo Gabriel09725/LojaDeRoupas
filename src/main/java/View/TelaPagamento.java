@@ -51,7 +51,6 @@ public class TelaPagamento extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         cbFormaPagamento = new javax.swing.JComboBox<>();
         btnConfirmar = new javax.swing.JButton();
-        btnCancelar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
@@ -72,9 +71,6 @@ public class TelaPagamento extends javax.swing.JFrame {
         btnConfirmar.setText("Confirmar Pagamento");
         btnConfirmar.addActionListener(this::btnConfirmarActionPerformed);
 
-        btnCancelar.setText("Cancelar");
-        btnCancelar.addActionListener(this::btnCancelarActionPerformed);
-
         jButton1.setText("Voltar");
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
@@ -84,7 +80,6 @@ public class TelaPagamento extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
@@ -122,9 +117,7 @@ public class TelaPagamento extends javax.swing.JFrame {
                 .addComponent(btnConfirmar)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(btnCancelar)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(84, Short.MAX_VALUE))
         );
 
         pack();
@@ -148,11 +141,6 @@ public class TelaPagamento extends javax.swing.JFrame {
                     "Erro", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnConfirmarActionPerformed
-
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void cbFormaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFormaPagamentoActionPerformed
         // TODO add your handling code here:
@@ -183,7 +171,6 @@ public class TelaPagamento extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConfirmar;
     private javax.swing.JComboBox<String> cbFormaPagamento;
     private javax.swing.JButton jButton1;
