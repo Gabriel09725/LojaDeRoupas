@@ -31,7 +31,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnProdutos = new javax.swing.JButton();
         btnClientes = new javax.swing.JButton();
-        btnVendas = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -43,9 +42,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         btnClientes.setText("Gerenciar Funcionários");
         btnClientes.addActionListener(this::btnClientesActionPerformed);
-
-        btnVendas.setText("Abri Vendas");
-        btnVendas.addActionListener(this::btnVendasActionPerformed);
 
         btnSair.setText("Sair do Sistema");
         btnSair.addActionListener(this::btnSairActionPerformed);
@@ -63,7 +59,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnProdutos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnVendas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSair, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(124, 124, 124))
         );
@@ -74,13 +69,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(38, 38, 38)
                 .addComponent(btnProdutos)
-                .addGap(18, 18, 18)
+                .addGap(32, 32, 32)
                 .addComponent(btnClientes)
-                .addGap(18, 18, 18)
-                .addComponent(btnVendas)
-                .addGap(18, 18, 18)
+                .addGap(37, 37, 37)
                 .addComponent(btnSair)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         pack();
@@ -103,11 +96,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         new TelaFuncionario().setVisible(true);
     }//GEN-LAST:event_btnClientesActionPerformed
-
-    private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        // TODO add your handling code here:
-        new TelaVenda().setVisible(true);
-    }//GEN-LAST:event_btnVendasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -138,7 +126,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnClientes;
     private javax.swing.JButton btnProdutos;
     private javax.swing.JButton btnSair;
-    private javax.swing.JButton btnVendas;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

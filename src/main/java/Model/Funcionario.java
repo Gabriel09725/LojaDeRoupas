@@ -1,22 +1,30 @@
 package Model;
 
 public class Funcionario {
+
     private int id;
     private String nome;
     private String cpf;
     private String email;
     private String telefone;
     private String senha;
+    private String cargo;
+    private int idade;
+    private double salario;
 
-    public Funcionario() {}
+    public Funcionario() {
+    }
 
-    public Funcionario(int id, String nome, String cpf, String email, String telefone, String senha) {
+    public Funcionario(int id, String nome, String cpf, String email, String telefone, String senha, String cargo, int idade, double salario) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
         this.telefone = telefone;
         this.senha = senha;
+        this.cargo = cargo;
+        this.idade = idade;
+        this.salario = salario;
     }
 
     public int getId() {
@@ -65,6 +73,30 @@ public class Funcionario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
+    public int getIdade() {
+        return idade;
+    }
+
+    public void setIdade(int idade) {
+        this.idade = idade;
+    }
+
+    public double getSalario() {
+        return salario;
+    }
+
+    public void setSalario(double salario) {
+        this.salario = salario;
     }
 
     @Override

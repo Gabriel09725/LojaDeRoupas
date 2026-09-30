@@ -9,7 +9,7 @@ package View;
  * @author gabri
  */
 public class TelaloginFuncionario extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaloginFuncionario.class.getName());
 
     /**
@@ -49,7 +49,7 @@ public class TelaloginFuncionario extends javax.swing.JFrame {
         btnEntrar.setText("Entrar");
         btnEntrar.addActionListener(this::btnEntrarActionPerformed);
 
-        jButton2.setText("Não sou Funcionário");
+        jButton2.setText("Voltar");
         jButton2.addActionListener(this::jButton2ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -59,30 +59,34 @@ public class TelaloginFuncionario extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(151, 151, 151)
+                        .addGap(131, 131, 131)
                         .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtUsuario)
-                            .addComponent(txtSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jButton2)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEntrar)))
-                .addContainerGap(127, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(35, 35, 35)
+                            .addComponent(btnEntrar))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(70, 70, 70)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel2))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtUsuario)
+                                        .addComponent(txtSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(5, 5, 5)
+                                    .addComponent(jButton2))))))
+                .addContainerGap(132, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(33, 33, 33)
                 .addComponent(jLabel1)
-                .addGap(30, 30, 30)
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -106,74 +110,83 @@ public class TelaloginFuncionario extends javax.swing.JFrame {
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
         // TODO add your handling code here:
-    String cpfOuNome = txtUsuario.getText().trim();
-    String senha = txtSenha.getText().trim();
+        String Nome = txtUsuario.getText().trim();
+        String senha = txtSenha.getText().trim();
+        if (Nome.isEmpty() || senha.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Por favor, preencha o Usuário e Senha!",
+                    "Campos Obrigatórios",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+        DAO.FuncionarioDAO FuncionarioDAO = new DAO.FuncionarioDAO();
+        Model.Funcionario funcionario = FuncionarioDAO.autenticar(Nome, senha);
 
-    if (cpfOuNome.isEmpty() || senha.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this, 
-            "Por favor, preencha o usuário e a senha!", 
-            "Campos Obrigatórios", 
-            javax.swing.JOptionPane.WARNING_MESSAGE
-        );
-        return;
-    }
-
-    DAO.FuncionarioDAO FuncionarioDAO = new DAO.FuncionarioDAO();
-    Model.Funcionario funcionario = FuncionarioDAO.autenticar(cpfOuNome, senha);
-
-    if (funcionario != null) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this, 
-            "Login efetuado com sucesso!\nBem-vindo(a), " + funcionario.getNome() + ".", 
-            "Sucesso", 
-            javax.swing.JOptionPane.INFORMATION_MESSAGE
-        );
-        
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(
-            this, 
-            "Usuário ou senha incorretos!", 
-            "Erro de Autenticação", 
-            javax.swing.JOptionPane.ERROR_MESSAGE
-        );
-        new TelaProduto().setVisible(true);
-        this.dispose();
-    }
-
+        if (funcionario != null) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Login efetuado com sucesso!\nBem-vindo(a), " + funcionario.getNome() + ".",
+        "Sucesso", 
+        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    try {
+                java.awt.EventQueue.invokeLater(() -> {
+                    View.TelaPrincipal tela = new View.TelaPrincipal(); 
+                    tela.setLocationRelativeTo(null);
+                    tela.setVisible(true);
+                });
+                this.dispose();
+            } catch (Exception e) {
+                javax.swing.JOptionPane.showMessageDialog(
+                        this,
+                        "Erro ao abrir a Tela Principal: " + e.getMessage(),
+                        "Erro de Inicialização",
+                        javax.swing.JOptionPane.ERROR_MESSAGE
+                );
+                e.printStackTrace();
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Usuário ou Senha incorretos!",
+                    "Erro de Autenticação",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        javax.swing.JOptionPane.showMessageDialog(this, "Redirecionando para a tela do cliente...");
-        new TelaLogin().setVisible(true);
+        javax.swing.JOptionPane.showMessageDialog(this, "Redirecionando para o Inicio ...");
+        new TelaBoasvindas().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+        /**
+         * @param args the command line arguments
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+        public static void main(String args[]) {
+            /* Set the Nimbus look and feel */
+            //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+            /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+             */
+            try {
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
                 }
+            } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+                logger.log(java.util.logging.Level.SEVERE, null, ex);
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+            //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new TelaloginFuncionario().setVisible(true));
-    }
+            /* Create and display the form */
+            java.awt.EventQueue.invokeLater(() -> new TelaloginFuncionario().setVisible(true));
+        }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEntrar;

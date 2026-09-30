@@ -10,8 +10,58 @@ import java.util.List;
 
 public class FuncionarioDAO {
 
+    public FuncionarioDAO() {
+        criarTabelaESeedIniciais();
+    }
+
+    /**
+     * Garante a criação da tabela no SQLite e insere um funcionário padrão se estiver vazia.
+     */
+    private void criarTabelaESeedIniciais() {
+        String sqlTabela = "CREATE TABLE IF NOT EXISTS funcionario ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "nome TEXT NOT NULL, "
+                + "cpf TEXT, "
+                + "email TEXT, "
+                + "telefone TEXT, "
+                + "senha TEXT, "
+                + "cargo TEXT, "
+                + "idade INTEGER, "
+                + "salario REAL"
+                + ");";
+
+        String sqlCheck = "SELECT COUNT(*) FROM funcionario";
+        String sqlInsert = "INSERT INTO funcionario (nome, cpf, email, telefone, senha, cargo, idade, salario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = ConexaoDAO.conectar();
+             PreparedStatement stmtTabela = conn.prepareStatement(sqlTabela)) {
+
+            stmtTabela.execute();
+
+            try (PreparedStatement stmtCheck = conn.prepareStatement(sqlCheck);
+                 ResultSet rs = stmtCheck.executeQuery()) {
+
+                if (rs.next() && rs.getInt(1) == 0) {
+                    try (PreparedStatement stmtInsert = conn.prepareStatement(sqlInsert)) {
+                        stmtInsert.setString(1, "Administrador");
+                        stmtInsert.setString(2, "000.000.000-00");
+                        stmtInsert.setString(3, "admin@loja.com");
+                        stmtInsert.setString(4, "(51) 99999-9999");
+                        stmtInsert.setString(5, "1234");
+                        stmtInsert.setString(6, "Gerente");
+                        stmtInsert.setInt(7, 30);
+                        stmtInsert.setDouble(8, 3500.00);
+                        stmtInsert.executeUpdate();
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao inicializar tabela de funcionários: " + e.getMessage());
+        }
+    }
+
     public boolean cadastrar(Funcionario funcionario) {
-        String sql = "INSERT INTO funcionario (nome, cpf, email, telefone, senha) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO funcionario (nome, cpf, email, telefone, senha, cargo, idade, salario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConexaoDAO.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -20,11 +70,14 @@ public class FuncionarioDAO {
             stmt.setString(3, funcionario.getEmail());
             stmt.setString(4, funcionario.getTelefone());
             stmt.setString(5, funcionario.getSenha());
+            stmt.setString(6, funcionario.getCargo());
+            stmt.setInt(7, funcionario.getIdade());
+            stmt.setDouble(8, funcionario.getSalario());
 
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            System.err.println("Erro ao cadastrar funcionario: " + e.getMessage());
+            System.err.println("Erro ao cadastrar funcionário: " + e.getMessage());
             return false;
         }
     }
@@ -38,23 +91,26 @@ public class FuncionarioDAO {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Funcionario c = new Funcionario();
-                c.setId(rs.getInt("id"));
-                c.setNome(rs.getString("nome"));
-                c.setCpf(rs.getString("cpf"));
-                c.setEmail(rs.getString("email"));
-                c.setTelefone(rs.getString("telefone"));
-                c.setSenha(rs.getString("senha"));
-                lista.add(c);
+                Funcionario f = new Funcionario();
+                f.setId(rs.getInt("id"));
+                f.setNome(rs.getString("nome"));
+                f.setCpf(rs.getString("cpf"));
+                f.setEmail(rs.getString("email"));
+                f.setTelefone(rs.getString("telefone"));
+                f.setSenha(rs.getString("senha"));
+                f.setCargo(rs.getString("cargo"));
+                f.setIdade(rs.getInt("idade"));
+                f.setSalario(rs.getDouble("salario"));
+                lista.add(f);
             }
         } catch (SQLException e) {
-            System.err.println("Erro ao listar Funcionário: " + e.getMessage());
+            System.err.println("Erro ao listar funcionários: " + e.getMessage());
         }
         return lista;
     }
 
     public boolean alterar(Funcionario funcionario) {
-        String sql = "UPDATE funcionario SET nome = ?, cpf = ?, email = ?, telefone = ?, senha = ? WHERE id = ?";
+        String sql = "UPDATE funcionario SET nome = ?, cpf = ?, email = ?, telefone = ?, senha = ?, cargo = ?, idade = ?, salario = ? WHERE id = ?";
         try (Connection conn = ConexaoDAO.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -63,12 +119,15 @@ public class FuncionarioDAO {
             stmt.setString(3, funcionario.getEmail());
             stmt.setString(4, funcionario.getTelefone());
             stmt.setString(5, funcionario.getSenha());
-            stmt.setInt(6, funcionario.getId());
+            stmt.setString(6, funcionario.getCargo());
+            stmt.setInt(7, funcionario.getIdade());
+            stmt.setDouble(8, funcionario.getSalario());
+            stmt.setInt(9, funcionario.getId());
 
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            System.err.println("Erro ao alterar funcionario: " + e.getMessage());
+            System.err.println("Erro ao alterar funcionário: " + e.getMessage());
             return false;
         }
     }
@@ -82,13 +141,13 @@ public class FuncionarioDAO {
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            System.err.println("Erro ao excluir funcionario: " + e.getMessage());
+            System.err.println("Erro ao excluir funcionário: " + e.getMessage());
             return false;
         }
     }
 
     public Funcionario autenticar(String cpfOuNome, String senha) {
-        String sql = "SELECT * FROM funcionario WHERE (nome ? OR senha = ?)";
+        String sql = "SELECT * FROM funcionario WHERE (nome = ? OR cpf = ?) AND senha = ?";
         try (Connection conn = ConexaoDAO.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -98,17 +157,21 @@ public class FuncionarioDAO {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Funcionario c = new Funcionario();
-                    c.setId(rs.getInt("id"));
-                    c.setNome(rs.getString("nome"));
-                    c.setCpf(rs.getString("cpf"));
-                    c.setEmail(rs.getString("email"));
-                    c.setTelefone(rs.getString("telefone"));
-                    return c;
+                    Funcionario f = new Funcionario();
+                    f.setId(rs.getInt("id"));
+                    f.setNome(rs.getString("nome"));
+                    f.setCpf(rs.getString("cpf"));
+                    f.setEmail(rs.getString("email"));
+                    f.setTelefone(rs.getString("telefone"));
+                    f.setSenha(rs.getString("senha"));
+                    f.setCargo(rs.getString("cargo"));
+                    f.setIdade(rs.getInt("idade"));
+                    f.setSalario(rs.getDouble("salario"));
+                    return f;
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Erro ao autenticar Funcionario: " + e.getMessage());
+            System.err.println("Erro ao autenticar funcionário: " + e.getMessage());
         }
         return null;
     }

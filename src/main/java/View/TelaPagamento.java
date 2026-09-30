@@ -9,8 +9,9 @@ package View;
  * @author gabri
  */
 public class TelaPagamento extends javax.swing.JFrame {
+
     private double valorTotal = 0.0;
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaPagamento.class.getName());
 
     /**
@@ -18,6 +19,20 @@ public class TelaPagamento extends javax.swing.JFrame {
      */
     public TelaPagamento() {
         initComponents();
+        this.setLocationRelativeTo(null);
+    }
+
+    public TelaPagamento(double valorTotal) {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        this.valorTotal = valorTotal;
+        exibirValorTotal();
+    }
+
+    private void exibirValorTotal() {
+        if (lblTotalExibir != null) {
+            lblTotalExibir.setText(String.format("R$ %.2f", this.valorTotal));
+        }
     }
 
     /**
@@ -37,6 +52,7 @@ public class TelaPagamento extends javax.swing.JFrame {
         cbFormaPagamento = new javax.swing.JComboBox<>();
         btnConfirmar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
 
@@ -59,30 +75,34 @@ public class TelaPagamento extends javax.swing.JFrame {
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(this::btnCancelarActionPerformed);
 
+        jButton1.setText("Voltar");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(138, 138, 138)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(46, 46, 46)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel2))
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblTotalExibir)
-                                .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGap(138, 138, 138)
+                            .addComponent(jLabel1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGap(46, 46, 46)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel2))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblTotalExibir)
+                                    .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(71, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -101,8 +121,10 @@ public class TelaPagamento extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnConfirmar)
                 .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
                 .addComponent(btnCancelar)
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         pack();
@@ -111,23 +133,20 @@ public class TelaPagamento extends javax.swing.JFrame {
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         // TODO add your handling code here:
         String formaSelecionada = (String) cbFormaPagamento.getSelectedItem();
-
-    Model.Pagamento pagamento = new Model.Pagamento(valorTotal, formaSelecionada);
-
-    DAO.PagamentoDAO dao = new DAO.PagamentoDAO();
-    boolean sucesso = dao.salvar(pagamento);
-
-    if (sucesso) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Pagamento realizado com sucesso!\nForma: " + formaSelecionada + 
-            "\nValor: " + lblTotalExibir.getText(), 
-            "Sucesso", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        this.dispose();
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Erro ao registrar o pagamento no banco de dados.", 
-            "Erro", javax.swing.JOptionPane.ERROR_MESSAGE);
-    }
+        Model.Pagamento pagamento = new Model.Pagamento(valorTotal, formaSelecionada);
+        DAO.PagamentoDAO dao = new DAO.PagamentoDAO();
+        boolean sucesso = dao.salvar(pagamento);
+        if (sucesso) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Pagamento realizado com sucesso!\nForma: " + formaSelecionada
+                    + "\nValor: " + lblTotalExibir.getText(),
+                    "Sucesso", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Erro ao registrar o pagamento no banco de dados.",
+                    "Erro", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -137,18 +156,19 @@ public class TelaPagamento extends javax.swing.JFrame {
 
     private void cbFormaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFormaPagamentoActionPerformed
         // TODO add your handling code here:
-        lblTotalExibir.setText(String.format("R$ %.2f", valorTotal));
+        exibirValorTotal();
     }//GEN-LAST:event_cbFormaPagamentoActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        new TelaVenda().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -159,9 +179,6 @@ public class TelaPagamento extends javax.swing.JFrame {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new TelaPagamento().setVisible(true));
     }
 
@@ -169,6 +186,7 @@ public class TelaPagamento extends javax.swing.JFrame {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConfirmar;
     private javax.swing.JComboBox<String> cbFormaPagamento;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;

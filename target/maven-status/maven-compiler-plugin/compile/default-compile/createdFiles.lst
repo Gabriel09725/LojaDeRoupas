@@ -6,7 +6,6 @@ View\TelaBoasvindas.class
 View\TelaLogin.class
 Model\Funcionario.class
 Model\Gerente.class
-View\TelaVenda$1.class
 Model\Categoria.class
 View\TelaMenuCliente.class
 DAO\GerenteDAO.class
@@ -20,7 +19,6 @@ View\TelaPrincipal.class
 View\TelaCliente.class
 View\TelaProduto.class
 DAO\FuncionarioDAO.class
-View\TelaBoasvindas$1.class
 View\TelaFuncionario.class
 View\TelaVenda.class
 DAO\ClienteDAO.class

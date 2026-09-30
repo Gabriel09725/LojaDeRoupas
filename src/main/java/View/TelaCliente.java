@@ -169,19 +169,15 @@ package View;
             txtTelefone.setText("");
             txtSenha.setText("");
         } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Erro ao cadastrar cliente no banco!", "Erro", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro ao cadastrar !", "Erro", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
+        new TelaMenuCliente().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
             // TODO add your handling code here:
-            txtNome.setText("");
-            txtCpf.setText("");
-            txtEmail.setText("");
-            txtTelefone.setText("");
-            txtSenha.setText("");
-            txtNome.requestFocus();
-            new TelaLogin().setVisible(true);
+            new TelaBoasvindas().setVisible(true);
             this.dispose();
     }//GEN-LAST:event_btnLimparActionPerformed
 

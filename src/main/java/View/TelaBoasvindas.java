@@ -4,6 +4,8 @@
  */
 package View;
 
+import DAO.ConexaoDAO;
+
 /**
  *
  * @author gabri
@@ -36,7 +38,7 @@ public class TelaBoasvindas extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("BEM-VINDO Á");
+        jLabel1.setText("BEM-VINDO Á LOJA DE ROUPAS !");
 
         jLabel2.setText("Escolha uma opção para continuar:");
 
@@ -46,7 +48,7 @@ public class TelaBoasvindas extends javax.swing.JFrame {
         btnCadastrar.setText("CRIAR NOVA CONTA");
         btnCadastrar.addActionListener(this::btnCadastrarActionPerformed);
 
-        jButton1.setText("LOJA DE ROUPAS");
+        jButton1.setText("LOGIN FUNCIONARIO");
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -54,35 +56,31 @@ public class TelaBoasvindas extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(87, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(107, 107, 107))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCadastrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnCadastrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(106, 106, 106))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jButton1))
+                .addGap(40, 40, 40)
+                .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addGap(39, 39, 39)
+                .addGap(28, 28, 28)
                 .addComponent(btnLogin)
-                .addGap(43, 43, 43)
+                .addGap(30, 30, 30)
                 .addComponent(btnCadastrar)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addGap(34, 34, 34)
+                .addComponent(jButton1)
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         pack();
@@ -102,7 +100,7 @@ public class TelaBoasvindas extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new TelaFuncionario().setVisible(true);
+        new TelaloginFuncionario().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -110,13 +108,6 @@ public class TelaBoasvindas extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-    DAO.ConexaoDAO.inicializarBanco();
-
-    java.awt.EventQueue.invokeLater(new Runnable() {
-        public void run() {
-            new TelaLogin().setVisible(true);
-        }
-    });
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -135,6 +126,7 @@ public class TelaBoasvindas extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        ConexaoDAO.inicializarBanco();
         java.awt.EventQueue.invokeLater(() -> new TelaBoasvindas().setVisible(true));
     }
 
